@@ -17,10 +17,11 @@ namespace RiderApplication.scenarios.LoginScenario
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+        public Action<object, ModalPoppingEventArgs> PagePopping;
+        public RiderAccountViewModel RiderViewModel = new RiderAccountViewModel();
+
         static string settingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         static string accSettingPath = Path.Combine(settingPath, "accountSetting");
-
-        public Action<object, ModalPoppingEventArgs> PagePopping;
 
         public LoginPage()
         {
@@ -28,7 +29,6 @@ namespace RiderApplication.scenarios.LoginScenario
 
             BindingContext = RiderViewModel;
 
-            File.Delete(accSettingPath);
             LoadLocalSettings();
         }
 
@@ -38,24 +38,18 @@ namespace RiderApplication.scenarios.LoginScenario
             {
                 try
                 {
-                    var readSettingsTask = await ReadSettingsAsync();
+                    var settingsStr = await ReadSettingsAsync();
 
-                    var rider = JsonConvert.DeserializeObject<RiderAccount>(readSettingsTask);
+                    var rider = JsonConvert.DeserializeObject<RiderAccount>(settingsStr);
 
                     entry_Login.Text = rider.Login; entry_Password.Text = rider.Password;
 
-                    var loadTask = await LoadRiderDataFromAPI(rider.Login, rider.Password);
+                    //var loadTask = await LoadRiderDataFromAPI(rider.Login, rider.Password);
 
-                    await Navigation.PushAsync(new MainPage()
-                    {
-                        BindingContext = new RiderAccountViewModel()
-                        {
-                            Name = rider.Name,
-                            CarModel = rider.CarModel,
-                            CarNumber = rider.CarNumber,
-                            HashCode = rider.HashCode
-                        }
-                    });
+                    await UpdateBindingContext(rider);
+
+                    PagePopping?.Invoke(this, new ModalPoppingEventArgs(this));
+                    await OpenMainPage();
                 }
                 catch (Exception)
                 {
@@ -66,71 +60,74 @@ namespace RiderApplication.scenarios.LoginScenario
 
         private async Task LoadRemoteSetting()
         {
-            try
+
+            if (entry_Login.Text.Length != 0 && entry_Password.Text.Length != 0)
             {
-                if (entry_Login.Text.Length != 0 && entry_Password.Text.Length != 0)
-                {
-                    // take data from Entry's and call webAPI method
+                // take data from Entry's and call webAPI method
 
-                    RiderAccount _rider = /*await LoadRiderDataFromAPI(entry_Login.Text, entry_Password.Text);*/
-                        new RiderAccount()
+                RiderAccount _rider = /*await LoadRiderDataFromAPI(entry_Login.Text, entry_Password.Text);*/
+                    new RiderAccount()
+                    {
+                        Password = "1231",
+                        CarModel = "GAZ",
+                        CarNumber = "o123ee",
+                        HashCode = "Krolik",
+                        ID = 228,
+                        Login = "ValeraZhmih",
+                        Name = "Zhmishenko Valerii Albertovich",
+                        Organization = new Organization()
                         {
-                            Password = "1231"
-                        };
+                            id = 1,
+                            name = "Twitch"
+                        }
+                    };
 
-                    if (_rider != null) // !=
-                    {
-                        //var jsonData = JsonConvert.SerializeObject(_rider); // saving to JSON
+                if (_rider != null)
+                {
+                    var jsonData = JsonConvert.SerializeObject(_rider); // saving to JSON
 
-                        //File.Delete(accSettingPath);
-                        //File.Create(accSettingPath);
-                        //await WriteSettingsAsync(jsonData);
+                    WriteSettingsAsync(jsonData);
 
-                        //Console.WriteLine("Opened");
+                     await UpdateBindingContext(_rider);
 
-                        UpdateBindingContext(_rider);
+                    PagePopping?.Invoke(this, new ModalPoppingEventArgs(this));
 
-                        PagePopping?.Invoke(this, new ModalPoppingEventArgs(this));
-
-                        await OpenMainPage();
-                    }
-                    else
-                    {
-                        // drop bad inits label
-                    }
+                    await OpenMainPage();
                 }
                 else
                 {
-                    // to do
-                    // we can drop warning label somewhere
+                    // drop bad inits label
                 }
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine(ex.Message);
+                // to do
+                // we can drop warning label somewhere
             }
+
         }
 
-        private void UpdateBindingContext(RiderAccount rider)
+        private async Task UpdateBindingContext(RiderAccount rider)
         {
-            var riderMVType = typeof(RiderAccountViewModel);
-            var riderModel = typeof(RiderAccount);
-
-            var riderMVTypeProps = riderMVType.GetProperties();
-            var riderModelProps = riderModel.GetProperties();
-
-            foreach (var riderMVprop in riderMVTypeProps)
+            await Task.Factory.StartNew(() =>
             {
-                foreach (var riderModelProp in riderModelProps)
+                var riderMVType = typeof(RiderAccountViewModel);
+                var riderModel = typeof(RiderAccount);
+
+                var riderMVTypeProps = riderMVType.GetProperties();
+                var riderModelProps = riderModel.GetProperties();
+
+                foreach (var riderMVprop in riderMVTypeProps)
                 {
-                    if (riderMVprop.Name == riderModelProp.Name)
+                    foreach (var riderModelProp in riderModelProps)
                     {
-                        riderMVprop.SetValue(this.RiderViewModel, riderModelProp.GetValue(rider));
+                        if (riderMVprop.Name == riderModelProp.Name)
+                        {
+                            riderMVprop.SetValue(this.RiderViewModel, riderModelProp.GetValue(rider));
+                        }
                     }
                 }
-            }
-
-            Console.WriteLine($"{this.RiderViewModel.Password}");
+            });
         }
 
         private async void btn_Enter_ButtonClicked(object sender, Controls.MyButtonEventArgs args)
@@ -170,13 +167,17 @@ namespace RiderApplication.scenarios.LoginScenario
             await this.Navigation.PopModalAsync();
         }
 
-        static async Task WriteSettingsAsync(string settings)
+        static void WriteSettingsAsync(string settings)
         {
+            File.Delete(accSettingPath);
+            var _fs = new FileStream(accSettingPath, FileMode.Create);
+            _fs.Close();
+
             using (FileStream fs = new FileStream(accSettingPath, FileMode.OpenOrCreate))
             {
                 using (StreamWriter writer = new StreamWriter(fs))
                 {
-                    await writer.WriteAsync(settings);
+                    writer.Write(settings);
                 }
             }
         }
@@ -195,8 +196,7 @@ namespace RiderApplication.scenarios.LoginScenario
             return _accountInfo;
         }
 
-        RiderAccount _rider;
-        public RiderAccountViewModel RiderViewModel = new RiderAccountViewModel();
         string accountInfo = string.Empty;
+        RiderAccount _rider;
     }
 }
