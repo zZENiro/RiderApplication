@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:RiderApplication.scenarios.LoginScenario.Controls"
+             xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+             mc:Ignorable="d"
+             x:Class="RiderApplication.scenarios.LoginScenario.LoginPage"
+             BackgroundColor="#E4E4E4"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <Style TargetType="Entry">
+            <Setter Property="BackgroundColor"
+                    Value="Transparent" />
+            <Setter Property="TextColor"
+                    Value="{DynamicResource TextPrimaryColor}"/>
+            <Setter Property="PlaceholderColor"
+                    Value="#E4E4E4"/>
+        </Style>
+
+        <Style TargetType="controls:Card"
+               x:Key="FormStyle">
+            <Setter Property="BackgroundColor"
+                    Value="{DynamicResource backgroundColor}" />
+            <Setter Property="Margin"
+                    Value="35,0" />
+            <Setter Property="CornerRadius"
+                    Value="0" />
+            <Setter Property="Elevation"
+                    Value="30" />
+            <Setter Property="Visual"
+                    Value="Material" />
+            <Setter Property="Padding"
+                    Value="10,8" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.35*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Animation Frame-->
+                <forms:AnimationView
+                    AutoPlay="True"
+                    Loop="True"
+                    Animation="locationAnimation.json"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"
+                    Grid.Row="0"/>
+
+                <!--Login Frame-->
+                <controls:Card Grid.Row="1"
+                               Style="{StaticResource FormStyle}"
+                               BackgroundColor="#8EDDDD"
+                               x:Name="LoginForm"
+                               IsVisible="True">
+
+                    <StackLayout Spacing="12">
+                        <Label 
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           Text="Логин"
+                           TextColor="White"
+                           FontSize="23">
+                            <Label.FontFamily>
+                                <OnPlatform x:TypeArguments="x:String">
+                                    <On Platform="Android" Value="cg.ttf#Century-Gothic" />
+                                </OnPlatform>
+                            </Label.FontFamily>
+                        </Label>
+                        <Entry x:Name="entry_Login" Text="{Binding Login}"/>
+
+                        <Label HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           Text="Пароль"
+                           TextColor="White"
+                           FontSize="23">
+                            <Label.FontFamily>
+                                <OnPlatform x:TypeArguments="x:String">
+                                    <On Platform="Android" Value="cg.ttf#Century-Gothic" />
+                                </OnPlatform>
+                            </Label.FontFamily>
+                        </Label>
+                        <Entry x:Name="entry_Password" Text="{Binding Password}" IsPassword="True"/>
+
+                    </StackLayout>
+                </controls:Card>
+
+                <!--Enter Button-->
+                <controls:MyButton
+                               ButtonClicked="btn_Enter_ButtonClicked"
+                               x:Name="btn_Enter"
+                               Text="Войти" 
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               HeightRequest="55"
+                               WidthRequest="180"
+                               StartColor="#8EDDDD"
+                               EndColor="#B1A5FF"
+                               Grid.Row="2"/>
+            </Grid>
+
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

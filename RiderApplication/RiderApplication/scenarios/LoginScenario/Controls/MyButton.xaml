@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:RiderApplication.scenarios.LoginScenario.Controls"
+             x:Class="RiderApplication.scenarios.LoginScenario.Controls.MyButton"
+             x:Name="This">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TextTitle" TargetType="Label">
+                <Setter Property="TextColor" Value="AliceBlue" />
+                <Setter Property="FontSize" Value="Title" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    <controls:PressableView Pressed="Handle_Pressed"
+                            Released="Handle_Released">
+
+        <controls:Card CornerRadius="0"
+                   BackgroundColor="Transparent"
+                   IsClippedToBounds="True"
+                   Padding="0"
+                   HasShadow="True"
+                   Visual="Material"
+                   Elevation="30">
+            <Grid>
+                <controls:GradientView StartColor="{Binding StartColor, Source={x:Reference This}}"
+                                           EndColor="{Binding EndColor, Source={x:Reference This}}"/>
+
+                <Label Text="{Binding Text, Source={x:Reference This}}"
+                           TextColor="White"
+                           Margin="10"
+                           HorizontalTextAlignment="Center"
+                           Style="{StaticResource TextTitle}">
+                    <Label.FontFamily>
+                        <OnPlatform x:TypeArguments="x:String">
+                            <On Platform="Android" Value="cg.ttf#Century-Gothic" />
+                        </OnPlatform>
+                    </Label.FontFamily>
+                </Label>
+
+            </Grid>
+        </controls:Card>
+    </controls:PressableView>
+</ContentView>
