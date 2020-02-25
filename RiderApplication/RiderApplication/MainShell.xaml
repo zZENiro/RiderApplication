@@ -4,16 +4,55 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:RiderApplication"
-             xmlns:login="clr-namespace:RiderApplication.scenarios.LoginScenario"
              mc:Ignorable="d"
              x:Class="RiderApplication.MainShell"
              Routing.Route="mainShell"
              Shell.NavBarIsVisible="True"
-             Shell.TabBarIsVisible="True">
+             Shell.TabBarIsVisible="True"
+             Shell.BackgroundColor="#B1A5FF"
+             Shell.ForegroundColor="White">
 
-    <FlyoutItem Title="Main" Route="mainPage">
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid BackgroundColor="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="{Binding Title}" Grid.Column="1"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       Padding="5"
+                       Margin="10"
+                       FontSize="25"
+                       TextColor="White"/>
+
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <FlyoutItem Title="Главная" Route="mainPage">
         <ShellContent>
             <local:MainPage/>
         </ShellContent>
     </FlyoutItem>
+
+    <FlyoutItem Title="Настройки" Route="settingsPage">
+        <ShellContent>
+            <local:MainPage/>
+        </ShellContent>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Информация" Route="infoPage">
+        <ShellContent>
+            <local:MainPage/>
+        </ShellContent>
+    </FlyoutItem>
+
 </Shell>

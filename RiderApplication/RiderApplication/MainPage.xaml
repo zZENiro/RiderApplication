@@ -5,23 +5,57 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="RiderApplication.MainPage"
-             Shell.NavBarIsVisible="False"
-             Shell.TabBarIsVisible="False">
+             Shell.NavBarIsVisible="True"
+             Shell.TabBarIsVisible="True">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Label">
-                <Setter Property="Margin" Value="5"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="Padding" Value="5"/>
                 <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
                 <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontFamily" Value="cg.ttf#Century-Gothic"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView>
-        <StackLayout>
-            <Label Text="Hello World!"/>
-        </StackLayout>
-    </ScrollView>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.8*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.40*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Text="Имя:"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
+
+            <Label Grid.Row="1" Grid.Column="0" Text="Номер:"/>
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ID}"/>
+
+            <Label Grid.Row="2" Grid.Column="0" Text="Номер машины:"/>
+            <Label Grid.Row="2" Grid.Column="1" Text="{Binding CarNumber}"/>
+
+            <Label Grid.Row="3" Grid.Column="0" Text="Модель машины:"/>
+            <Label Grid.Row="3" Grid.Column="1" Text="{Binding CarModel}"/>
+
+            <Label Grid.Row="4" Grid.Column="0" Text="Организация:"/>
+            <Label Grid.Row="4" Grid.Column="1" Text="{Binding Organization.name}"/>
+
+
+        </Grid>
+    </ContentPage.Content>
+    
 
 </ContentPage>

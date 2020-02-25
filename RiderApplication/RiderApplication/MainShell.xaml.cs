@@ -23,6 +23,7 @@ namespace RiderApplication
             loginPage.PagePopping += (s, e) =>
             {
                 this.BindingContext = (((ModalPoppingEventArgs)e).Modal as LoginPage).RiderViewModel;
+                
                 Console.WriteLine("Popped");
             };
 

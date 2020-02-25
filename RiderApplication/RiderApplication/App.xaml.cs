@@ -25,5 +25,17 @@ namespace RiderApplication
         protected override void OnResume()
         {
         }
+
+        public static Color LookupColor(Color color)
+        {
+            try
+            {
+                return color;
+            }
+            catch (Exception)
+            {
+                return Color.White;
+            }
+        }
     }
 }

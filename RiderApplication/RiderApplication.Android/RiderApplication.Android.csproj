@@ -61,6 +61,7 @@
     <Compile Include="Rederers\GradientViewRenderer.cs" />
     <Compile Include="Rederers\LabelViewRenderer.cs" />
     <Compile Include="Rederers\PressableViewRenderer.cs" />
+    <Compile Include="Rederers\ShellRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
