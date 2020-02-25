@@ -12,7 +12,7 @@ namespace RiderApplication
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainShell : Shell
-    {
+    { 
         public MainShell()
         {
             InitializeComponent();

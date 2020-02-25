@@ -28,7 +28,7 @@ namespace RiderApplication.scenarios.LoginScenario
             InitializeComponent();
 
             BindingContext = RiderViewModel;
-
+            File.Delete(accSettingPath);
             LoadLocalSettings();
         }
 
