@@ -39,7 +39,6 @@ namespace RiderApplication.Droid.Rederers
         {
             var renderer = base.CreateShellItemRenderer(shellItem);
 
-
             return renderer;
         }
 

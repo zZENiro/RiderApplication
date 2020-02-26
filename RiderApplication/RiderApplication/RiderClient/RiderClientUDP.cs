@@ -14,36 +14,32 @@ namespace RiderApplication.RiderClient
         Socket _client;
         string _hs;
 
-        public RiderClientUDP(string IPString, int Port, string HashCode)
-        {
-            _IPaddress = IPAddress.Parse(IPString);
-            _serverAddress = new IPEndPoint(_IPaddress, Port);
-            _client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            _hs = HashCode;
-        }
+        public RiderClientUDP(string IPString, int Port, string HashCode) =>
+            (_IPaddress, _hs, _serverAddress, _client) =
+            (IPAddress.Parse(IPString), HashCode, new IPEndPoint(_IPaddress, Port), new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp));
 
         public IPEndPoint RemoteClient
         {
-            get { return _serverAddress; }
-            set { _serverAddress = value; }
+            get => _serverAddress;
+            set => _serverAddress = value;
         }
 
         public IPAddress RemoteIPAddress
         {
-            get { return _IPaddress; }
-            set { _IPaddress = value; }
+            get => _IPaddress;
+            set => _IPaddress = value;
         }
 
         public Socket Client
         {
-            get { return _client; }
-            set { _client = value; }
+            get => _client;
+            set => _client = value;
         }
 
         public string HashCode
         {
-            get { return _hs; }
-            set { _hs = value; }
+            get => _hs;
+            set => _hs = value;
         }
 
         public void SendMessage(string message)
@@ -53,14 +49,12 @@ namespace RiderApplication.RiderClient
             _client.SendTo(data, SocketFlags.None, _serverAddress);
         }
 
-        public async Task SendMessageAsync(string message)
-        {
+        public async Task SendMessageAsync(string message) =>
             await Task.Factory.StartNew(() =>
             {
                 var data = Encoding.ASCII.GetBytes(message);
 
                 _client.SendTo(data, SocketFlags.None, _serverAddress);
             });
-        }
     }
 }

@@ -8,7 +8,7 @@ using Xamarin.Essentials;
 
 namespace RiderApplication.LocationSender
 {
-    public class LocationSenderClient<T> : 
+    public class LocationSenderClient<T> :
         ILocationSenderClient<IRiderClient>
         where T : IRiderClient
     {
@@ -17,32 +17,27 @@ namespace RiderApplication.LocationSender
 
         public IRiderClient Sender
         {
-            get { return _locationSender; }
-            set { _locationSender = value; }
+            get => _locationSender;
+            set => _locationSender = value;
         }
 
-        public GeolocationModelView Geolocation 
+        public GeolocationModelView Geolocation
         {
-            get { return _glocation; }
+            get => _glocation;
         }
 
-        public LocationSenderClient(IRiderClient riderClient)
+        public LocationSenderClient(T riderClient)
         {
             _locationSender = riderClient;
             _glocation = new GeolocationModelView();
 
             _glocation.LocationUpdated += async (s, e) =>
-            {
                 await _locationSender.SendMessageAsync(
                     $"{e.Longitude};" +
                     $"{e.Longitude}" +
                     $"-{_locationSender.HashCode}");
-            };
         }
 
-        public async Task StartSendingLocation()
-        {
-            await _glocation.Start();
-        }
+        public async Task StartSendingLocation() => await _glocation.Start();
     }
 }

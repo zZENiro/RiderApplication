@@ -17,8 +17,8 @@ namespace RiderApplication.scenarios.LoginScenario
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        public Action<object, ModalPoppingEventArgs> PagePopping;
-        public RiderAccountViewModel RiderViewModel = new RiderAccountViewModel();
+        public Action<object, ModalPoppingEventArgs> PagePopping { get; set; }
+        public RiderAccountViewModel RiderViewModel { get; set; } = new RiderAccountViewModel();
 
         static string settingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         static string accSettingPath = Path.Combine(settingPath, "accountSetting");
@@ -28,7 +28,8 @@ namespace RiderApplication.scenarios.LoginScenario
             InitializeComponent();
 
             BindingContext = RiderViewModel;
-            File.Delete(accSettingPath);
+
+            File.Delete(accSettingPath); //
             LoadLocalSettings();
         }
 
@@ -64,31 +65,16 @@ namespace RiderApplication.scenarios.LoginScenario
             if (entry_Login.Text.Length != 0 && entry_Password.Text.Length != 0)
             {
                 // take data from Entry's and call webAPI method
-
-                RiderAccount _rider = /*await LoadRiderDataFromAPI(entry_Login.Text, entry_Password.Text);*/
-                    new RiderAccount()
-                    {
-                        Password = "1231",
-                        CarModel = "GAZ",
-                        CarNumber = "o123ee",
-                        HashCode = "Krolik",
-                        ID = 228,
-                        Login = "ValeraZhmih",
-                        Name = "Zhmishenko Valerii Albertovich",
-                        Organization = new Organization()
-                        {
-                            id = 1,
-                            name = "Twitch"
-                        }
-                    };
+                _rider = await LoadRiderDataFromAPI(entry_Login.Text, entry_Password.Text);
+                
 
                 if (_rider != null)
                 {
-                    var jsonData = JsonConvert.SerializeObject(_rider); // saving to JSON
+                    var jsonData = JsonConvert.SerializeObject(_rider);
 
                     WriteSettingsAsync(jsonData);
 
-                     await UpdateBindingContext(_rider);
+                    await UpdateBindingContext(_rider);
 
                     PagePopping?.Invoke(this, new ModalPoppingEventArgs(this));
 
@@ -130,17 +116,14 @@ namespace RiderApplication.scenarios.LoginScenario
             });
         }
 
-        private async void btn_Enter_ButtonClicked(object sender, Controls.MyButtonEventArgs args)
-        {
-            await LoadRemoteSetting();
-        }
+        private async void btn_Enter_ButtonClicked(object sender, Controls.MyButtonEventArgs args) => await LoadRemoteSetting();
 
         // loading Data from API
         private async Task<RiderAccount> LoadRiderDataFromAPI(string login, string password)
         {
             try
             {
-                var client = new RestClient($"https://localhost:5001/api/Riders/{login}:{password}");
+                var client = new RestClient($"https://185.39.17.11:5001/api/Riders/{login}:{password}");
                 client.Timeout = -1;
                 var request = new RestRequest(Method.GET);
                 request.AddHeader($"Content-Type", "application/json");
@@ -162,11 +145,8 @@ namespace RiderApplication.scenarios.LoginScenario
             }
         }
 
-        private async Task OpenMainPage()
-        {
-            await this.Navigation.PopModalAsync();
-        }
-
+        private async Task OpenMainPage() => await this.Navigation.PopModalAsync();
+        
         static void WriteSettingsAsync(string settings)
         {
             File.Delete(accSettingPath);

@@ -20,9 +20,6 @@ namespace RiderApplication.ViewModels
             return true;
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string PropName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropName));
-        }
+        protected void OnPropertyChanged([CallerMemberName] string PropName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropName));
     }
 }

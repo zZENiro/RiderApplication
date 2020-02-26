@@ -23,11 +23,11 @@ namespace RiderApplication
         {
             InitializeComponent();
 
-            RiderClientUDP ClientRider = new RiderClientUDP("RemoteHostIP", 11000, (Shell.Current.BindingContext as RiderAccountViewModel).HashCode);
+            //RiderClientUDP riderClient = new RiderClientUDP("192.168.0.100:", 5000, "4402831ADQW");
 
-            LocationSenderClient<RiderClientUDP> locationSender = new LocationSenderClient<RiderClientUDP>(ClientRider);
+            //ILocationSenderClient<IRiderClient> locationSender = new LocationSenderClient<RiderClientUDP>(riderClient);
 
-            locationSender.StartSendingLocation();
+            //locationSender.StartSendingLocation();
         }
     }
 }

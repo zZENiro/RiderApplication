@@ -18,16 +18,11 @@ namespace RiderApplication.scenarios.LoginScenario.Controls
 
         public int Elevation
         {
-            get { return (int)GetValue(ElevationProperty); }
-            set { SetValue(ElevationProperty, value); }
+            get => (int)GetValue(ElevationProperty);
+            set => SetValue(ElevationProperty, value);
         }
 
-        public Card()
-        {
-            HasShadow = true;
-            Padding = new Thickness(12, 6);
-            BackgroundColor = Color.Transparent;
-        }
+        public Card() => (HasShadow, Padding, BackgroundColor) = (true, new Thickness(12, 6), Color.Transparent);
 
         private void UpdateElevation()
         {
@@ -45,9 +40,6 @@ namespace RiderApplication.scenarios.LoginScenario.Controls
                 .SetElevation(Elevation);
         }
 
-        /// <summary>
-        /// Fix for styling a few properties (Padding, BackgroundColor...)
-        /// </summary>
         protected override void OnPropertyChanged(string propertyName = null)
         {
             base.OnPropertyChanged(propertyName);
@@ -58,11 +50,6 @@ namespace RiderApplication.scenarios.LoginScenario.Controls
                 {
                     Padding = (Thickness)Style.Setters.First(s => s.Property == PaddingProperty).Value;
                 }
-
-                //if (Style.Setters.Any(s => s.Property == BackgroundColorProperty))
-                //{
-                //    BackgroundColor = (Color)Style.Setters.First(s => s.Property == BackgroundColorProperty).Value;
-                //}
             }
         }
     }

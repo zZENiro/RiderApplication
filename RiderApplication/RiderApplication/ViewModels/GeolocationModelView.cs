@@ -16,12 +16,7 @@ namespace RiderApplication.ViewModels
 
     public class GeolocationModelView : ModelView
     {
-        public Action<object, GeolocationModelViewEventArgs> LocationUpdated;
-
-        public GeolocationModelView()
-        {
-
-        }
+        public Action<object, GeolocationModelViewEventArgs> LocationUpdated { get; set; }
 
         public async Task Start()
         {
@@ -42,26 +37,14 @@ namespace RiderApplication.ViewModels
 
         public double Latitude
         {
-            get
-            {
-                return _latitude;
-            }
-            set
-            {
-                SetValue(ref _latitude, value);
-            }
+            get => _latitude;
+            set => SetValue(ref _latitude, value);
         }
 
         public double Longitude
         {
-            get
-            {
-                return _longitude;
-            }
-            set
-            {
-                SetValue(ref _longitude, value);
-            }
+            get => _longitude;
+            set => SetValue(ref _longitude, value);
         }
 
         private double _latitude;

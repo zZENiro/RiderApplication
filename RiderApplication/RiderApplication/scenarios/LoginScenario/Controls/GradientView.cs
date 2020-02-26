@@ -17,30 +17,30 @@ namespace RiderApplication.scenarios.LoginScenario.Controls
             typeof(GradientView),
             default(Color));
 
-        public Color StartColor
-        {
-            get { return (Color)GetValue(StartColorProperty); }
-            set { SetValue(StartColorProperty, value); }
-        }
-
         public static readonly BindableProperty EndColorProperty = BindableProperty.Create(
             "EndColor",
             typeof(Color),
             typeof(GradientView),
             default(Color));
 
+        public Color StartColor
+        {
+            get => (Color)GetValue(StartColorProperty);
+            set => SetValue(StartColorProperty, value);
+        }
+
         public Color EndColor
         {
-            get { return (Color)GetValue(EndColorProperty); }
-            set { SetValue(EndColorProperty, value); }
+            get => (Color)GetValue(EndColorProperty);
+            set => SetValue(EndColorProperty, value);
         }
 
         public static readonly BindableProperty DirectionProperty = BindableProperty.Create("Direction", typeof(GradientDirection), typeof(GradientView), default(GradientDirection));
 
         public GradientDirection Direction
         {
-            get { return (GradientDirection)GetValue(DirectionProperty); }
-            set { SetValue(DirectionProperty, value); }
+            get => (GradientDirection)GetValue(DirectionProperty);
+            set => SetValue(DirectionProperty, value);
         }
     }
 }
